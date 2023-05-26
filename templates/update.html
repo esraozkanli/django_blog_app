@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block body %}
+{% load crispy_forms_tags %}
+
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <h3>Makale Düzenle</h3>
+        <hr>
+
+        <form method ="post" enctype="multipart/form-data">
+
+            {% csrf_token %}
+            {{form.media}} <!--CK Editörü kullanabilmek için ekledik.-->
+            {{form|crispy }} <!--Formumuzu cripsy form şeklinde göstermek istediğimiz için bu şekilde yazdık.-->
+            <br>
+            <button type = "submit" class ="btn btn-danger">Makale Güncelle</button>
+
+        </form>    
+    </div>
+</div>
+
+{% endblock body %}

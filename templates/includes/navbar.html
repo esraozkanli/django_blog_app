@@ -1,0 +1,47 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="{% url 'index' %}">YB Blog</a>
+    <!-- İsim değişikliği yaptık. -->
+    <!-- YB Blog yazısına tıklandığında Ana Sayfaya gitmesini istediğimiz için "/" işareti koyduk. -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto"> 
+        <!-- ul liste elementi demek. -->
+        <!-- mr-auto eklenen butonları otomatik olarak sola yaslar. -->
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'about' %}">Hakkımızda</a>
+          <!-- Hakkımkızdaya basıldığında about sayfasına gitmesini istediğimiz için href="/about" yazdık. -->
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'article:articles' %}">Makaleler</a>
+          <!-- Makalelere basıldığında article sayfasına gitmesini istediğimiz için href="/article" yazdık. -->
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto"> 
+      {% if request.user.is_authenticated %} <!--Kullanıcı girişi yapıldıysa çalışır.-->
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'article:dashboard' %}">Kontrol Paneli</a>
+          <!-- Makalelere basıldığında register sayfasına gitmesini istediğimiz için href="/register yazdık. -->
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'user:logout' %}">Çıkış Yap</a>
+          <!-- Makalelere basıldığında login sayfasına gitmesini istediğimiz için href="/login" yazdık. -->
+        </li>
+      {% else %} <!--Kullanıcı girişi yapılmadıysa çalışır.-->
+
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'user:login' %}">Giriş Yap</a>
+          <!-- Makalelere basıldığında login sayfasına gitmesini istediğimiz için href="/login" yazdık. -->
+        </li>
+      {% endif %}
+      
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'user:register' %}">Kayıt Ol</a>
+          <!-- Makalelere basıldığında register sayfasına gitmesini istediğimiz için href="/register yazdık. -->
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <!-- İnternetten hazır navbar kalıbını ekledik. -->

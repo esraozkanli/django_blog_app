@@ -1,0 +1,1 @@
+#Bu projenin python modülü olduğunu gösterir. Üzerinde işlem yapılmaz. Proje dosyası oluşturulurken otomatik olarak oluşur.

@@ -1,0 +1,91 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+
+<div class="row">
+    <div class="col-md-10 offset-md-3"> <!--Yazıyı ekrana ortalar-->
+        <div class="col-lg-8"> <!--Çizgiyi ekrana ortalar-->
+            <h3>Makaleler</h3>
+
+            <hr>
+            
+            <form >
+                {% csrf_token %} 
+                <input type="text" name = "keyword" class="input-sm" maxlength="64" placeholder="Ara..."> <!--https://bootsnipp.com/snippets/9bA4 sitesinden hazır arama kısmı kalıbını aldık. form-control ü kaldırarak arama alanını daralttık.Arama kutusuna yazılan yazıyı alabilmemiz için mutlaka name tanımlamamız gerekir. Çünkü biz bunun içinde ki name değerine göre arama yapacağız. Bizde name = "keyword" olarak tanımladık.-->
+                <button type="submit" class="btn btn-danger ">Ara</button> <!--btn-sm yi kaldırarak arama butonunu biraz daha büyüttük. Butonun kırmızı renk olmasını istediğimiz için primary yerine danger yazdık. -->
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% if articles %}
+
+    {% for article in articles %}
+    <div class="row">
+        <div class="col-md-10 offset-md-3"> <!--Yazıyı ekrana ortalar-->
+            <!-- Post Content Column -->
+            <div class="col-lg-8">
+
+            <!-- Title -->
+            <a href = "{% url 'article:detail' article.id %}"> <h2 class="mt-4">{{article.title}}</h2> </a> <!--a etiketiyle makale başlığına basıldığında detaylar sayfasına yönlendirecek link oluşturduk.-->
+
+            <!-- Author -->
+            <p class="lead">
+                {{article.author.username}} tarafından yayınlandı.
+            </p>
+
+            <hr>
+
+            <!-- Date/Time -->
+            <p class="lead">
+                {{article.created_date}}
+           </p>
+
+            <hr>
+
+            <!-- Preview Image -->
+            {% if article.article_image %} <!--Eğer artilce.article_image varsa if bloğu çalışacak.-->
+                <a href = "{% url 'article:detail' article.id %}"><img class="img-fluid rounded" src="{{article.article_image.url}}" alt=""></a> <!--a etiketiyle makalede ki resime basıldığında detaylar sayfasına yönlendirecek link oluşturduk.-->    
+            {% else %}
+            {% endif %}
+
+            <hr>
+
+            <!-- Post Content -->
+            <p class="lead">
+
+            {{article.content | safe | truncatewords:50}} <!--Makale içeriğimizin html içeriği şeklinde değil düz yazı şeklinde görünmesi için safe modülünü kullandık.-->
+
+            </p>
+
+            <a style = "float : right" href = "{% url 'article:detail' article.id %}" class = "btn btn-danger">Devamını Oku </a> <!--style = "float : right" ile butonun en sağda olmasını sağladık.-->
+
+            <hr>
+                </article>
+            </div>
+        </div>
+    </div>
+
+
+    {% endfor %}
+
+
+{% else %}
+<div class="row">
+    <div class="col-md-10 offset-md-3"> <!--Yazıyı ekrana ortalar-->
+        <div class="col-lg-8"> <!--Çizgiyi ekrana ortalar-->
+            <br>
+            <div class = "alert alert-danger">
+                Makale Bulunamadı.
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+{% endblock body %}
+

@@ -1,0 +1,448 @@
+#ADMİN OLUŞTURUP APPİ AYAĞA KALDIRMAK
+1.Bilgisayardan komut istemine "django-admin startproject (proje ismi)" yazılıp çalıştırılarak proje dosyası oluşturulacak.
+2.settings dosyasından isteğe göre dil ve saat bilgisiyle ilgili ayarlar yapılacak.
+3.Farklı bir terminal açılarak terminale "python manage.py migrate" yazılarak db dosyasında uygulamayla ilgili tabloların oluşması sağlanacak. Uygulama içinde model(tablo) oluşturduğumuzda appi çalıştırmadan önce bu işlemi yaparak tabloları güncellemeliyiz.
+4.Daha sonra ikinci açtığımız terminale "python manage.py createsuperuser" yazılarak ana admin girilecek.
+5.Terminale "python manage.py runserver" yazılarak uygulama çalıştırılacak.
+6.Django admin paneline ulaşmak için arama çubuğuna "http://127.0.0.1:8000/admin/" yazılacak.
+
+#APP E UYGULAMA EKLEYİP UYGULAMA İÇİNDE MODEL(TABLO) OLUŞTURMA
+1.App e uygulama eklemek için ana terminale(ilk terminale) "python manage.py startapp (uygulama ismi)" yazılıp çalıştırılarak uygulama oluşturulacak.
+2.Oluşturulan uygulamanın içindeki models.py dosyasında class şeklinde istenilen model oluşturulacak.
+3.Oluşturulan model admin.py dosyasına "from .models import (model adı)" yazılarak oluşturduğumuz model eklenecek.
+4.Eğer oluşturulan model admin panelinde gösterilmek isteniyorsa admin.py dosyasının içine "admin.site.register(model adı)" komutu yazılarak eklenecek.
+5.Modelimizin çalışabilmesi için son olarak oluşturduğumuz modelin adını blog klasörünün içindeki settings.py dosyasının içinde yer alan INSTALLED_APPS listesinin içine "model adı" şeklinde eklemeliyiz.
+6.Oluşturduğumuz modelin çalışması için ikinci terminale "python manage.py migrate" yazıp çalıştırarak modelimizi db dosyamıza eklemeliyiz.
+
+#DJANGO SHELL İLE ORM SORGULARINI KULLANMA
+
+    #ORM ile kullanıcı ekleme
+    1.Yeni bir terminal açıp "python manage.py shell" yazıp çalıştırıyoruz. Gelen ekran bizim ORM sorgularımızı yapacağımız bir terminaldir.
+    2.Eğer djangonun kendi uygulamasının içinde ki User tablosundan bir obje oluşturmak istiyorsak iki classı eklemeliyiz:
+        from django.contrib.auth.models import User #django.contrib.auth uygulamasının içinde ki models klasöründen User modelini dahil ettik.
+        from article.models import Article #article uygulamasının içinde ki models uygulamasından article modelini dahil ettik.
+
+    3.Dahil etmiş olduğumuz User modelinden "newUser = User(username="denemekullanici",password="123")" isimli bir obje oluşturduk.
+    4.Oluşturduğumuz objeyi "newUser.save()" diyerek kayıt ettik.
+    5.Eğer oluşturduğumuz kullanıcının şifresini gizli olarak kayıt etmek istiyorsak şifreyi objeyi oluştururken oluşturmayıp "newUser2.set_password("123")" şeklinde oluşturup kayıt etmeliyiz.
+
+    #ORM ile boş bir kullanıcı oluşturup daha sonra bilgileri ekleme
+    1.Yeni bir terminal açıp "python manage.py shell" yazıp çalıştırıyoruz. Gelen ekran bizim ORM sorgularımızı yapacağımız bir terminaldir.
+    2.Eğer djangonun kendi uygulamasının içinde ki User tablosundan bir obje oluşturmak istiyorsak iki classı eklemeliyiz:
+        "from django.contrib.auth.models import User" #django.contrib.auth uygulamasının içinde ki models klasöründen User modelini dahil ettik.
+        "from article.models import Article" #article uygulamasının içinde ki models uygulamasından article modelini dahil ettik.
+    3."newUser3 = User()" şeklinde boş bir obje oluşturduk.
+    4.Daha sonra "newUser3.(eklemek istediğimiz özellik) = "özellik özelliği"" şeklinde User tablosunda yer alan tüm özellikleri bu şekilde ekleyebiliriz.
+    5."newUser3.save()" dediğimizde kullanıcımız eklenmiş olacaktır.
+
+    #ORM ile article ekleme
+    1.Yeni bir terminal açıp "python manage.py shell" yazıp çalıştırıyoruz. Gelen ekran bizim ORM sorgularımızı yapacağımız bir terminaldir.
+    2.Eğer djangonun kendi uygulamasının içinde ki User tablosundan bir obje oluşturmak istiyorsak iki classı eklemeliyiz:
+        "from django.contrib.auth.models import User" #django.contrib.auth uygulamasının içinde ki models klasöründen User modelini dahil ettik.
+        "from article.models import Article" #article uygulamasının içinde ki models uygulamasından article modelini dahil ettik.
+    3."article = Article(title="Django Shell Deneme",content = "İçerik İçerik",author =newUser3)" şeklinde de article(makale) ekleyebiliriz.
+    4.Kullanıcıda olduğu gibi article eklemede de ilk boş halde oluşturup sonradan ekleme yapabiliriz.
+    5."article = Article()" şeklinde boş bir obje oluşturduk.
+    6.Daha sonra "newUser3.(eklemek istediğimiz özellik) = "özellik özelliği"" şeklinde User tablosunda yer alan tüm özellikleri bu şekilde ekleyebiliriz.
+    7."newUser3.save()" dediğimizde kullanıcımız eklenmiş olacaktır.
+
+    #ORM ile article içindeki bilgileri değiştirme
+    1."Article.objects.create(title="Deneme 21",content="21",author=newUser2)" şeklinde de article oluşturabiliriz.
+    2.Bu article ın içinde ki bilgileri değiştirmek istersekte bunu bir objeye eşitleyip işlem yapabiliriz.
+        article = Article.objects.create(title="Deneme 21",content="21",author=newUser2)
+        article.title = "Deneme 30 değişti."
+        article.save()
+
+    #ORM ile veri tabanında ki tüm artcileları alma
+    1.Yeni bir terminal açıp "python manage.py shell" yazıp çalıştırıyoruz. Gelen ekran bizim ORM sorgularımızı yapacağımız bir terminaldir.
+    2.Eğer djangonun kendi uygulamasının içinde ki User tablosundan bir obje oluşturmak istiyorsak iki classı eklemeliyiz:
+        "from django.contrib.auth.models import User" #django.contrib.auth uygulamasının içinde ki models klasöründen User modelini dahil ettik.
+        "from article.models import Article" #article uygulamasının içinde ki models uygulamasından article modelini dahil ettik.
+    3."Article.objects.all()" diyerek veri tabanındaki tüm article ları alabiliriz.
+
+    NOT: Eğer belirli bir özelliğe göre veriyi almak istersek aşağıda ki methodu kullanabiliriz:
+        article = Article.objects.get((özellik_adı)="özellik")
+
+    #ORM ile article silme
+    1.article.delete() diyerek article ımızı silebiliriz.,
+
+    #ORM ile veri tabanında ki verileri filtreleme
+    1.Article.objects.filter((özellik_adı)_contains="filtreleme_kelimesi")
+
+
+https://docs.djangoproject.com/en/2.0/topics/db/queries/
+
+
+#UYGULAMAYI KODLAMA
+1.settings dosyasında yer alan templates listesinde ki DIRS kısmına templateslarımızı yazacağımız klasörün ismini belirtmeliyiz.
+2.Blog proje klasörünün içinde oluşturacağımız templateslar için bir dosya açıyoruz.
+3.Oluşturacağımız templatesları bu klasörün içinde oluşturmalıyız.
+4.Uygulamamızın çalıştırmasını istediğimiz fonksiyonu artcile klasörünün içinde ki views dosyasının içine yazıyoruz.
+5.Templates klasörü içine oluşturduğumuz templatesları ve views dosyasında oluşturduğumuz fonksiyonları. urls.py dosyasında path olarak eklemeliyiz.
+
+#STATİK DOSYALARI KULLANMA
+1.ilk olarak statik dosyalarımızın yer alacağı "static" isimli bir klasör oluşturuyoruz.
+2.Oluşturmak istediğimiz dosyayı bu kalsörün altına oluşturuyoruz.
+3.Oluşturduğumuz bu statik(CSS) dosyamızı kullanmak istediğimiz html sayfasına link etiketi içinde hrefte belirtiyoruz.
+
+###NOT:Eğer static klasörümüz uygulama dosyamızın içinde değil ise uygulamamızın klasöre erişebilmesi için aşağıda ki komutu settings.py içine eklememiz gerekir. os modülü import edilmesi unutulmamalıdır.
+import os
+    STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    ]
+
+    https://docs.djangoproject.com/en/2.0/howto/static-files/
+
+#UYGULAMA ANA SAYFASI OLUŞTURMA
+1.Daha önce oluşturduğumuz templates klasörünün içine layout.html isimli bir dosya oluşturuyoruz ve ! işareti ile html sayfasının ana hattını oluşturuyoruz.
+2.https://getbootstrap.com/docs/4.0/getting-started/introduction/ sitesinde ki CSS kodunu alıp ana düzenlemenin olduğu sayfa olan layout.html dosyasına ekliyoruz.
+2.https://getbootstrap.com/docs/4.0/getting-started/introduction/ sitesinde ki 3 adet script kodlarını da layout.html deki body etiketi içine ekliyoruz.
+4.Daha sonra layout.html sayfasının içinde ki body etiketinin içine kapsayıcı olması için class = "container" olan bir div etiketinin içine body bloğu oluşturuyoruz. Bu bloğun layout sayfası miras olarak aktarılan sayfalarda düzenlenmesini istediğimiz için boş bırakıyoruz.
+5.index.html şeklinde anasyafamız olacak bir sayfa oluşturuyoruz ve layout sayfasını miras olarak ekliyoruz. layout sayfasında oluşturduğumuz body bloğunu burada doldurabiliriz.
+6.Oluşturduğumuz index.html anasayfamızda layouttaki body bloğumuzu dolduruyoruz.
+7.article klasörünün içinde yer alan views dosyasında ana sayfamız için index isimli bir fonksiyon oluşturuyoruz.
+8.Oluşturduğumuz bu fonksiyonu kullanabilmek için blog klasörünün içinde yer alan urls.py dosyasına "from article import views" şeklinde ilk olarak views dosyasını aktarıyoruz. Bunun sebebi oluşturduğumuz her fonksiyonu bu şekilde aktarark kod kalabalıklığını engellemektir.
+9.Oluşturduğumuz html sayfasını ve fonksiyonu uygulamanın tanıyabilmesi için blog klasörünün içinde ki urls.py dosyasında "path('',views.index,name = "index")" olarak ekliyoruz.
+    ###Flaskta yaptığımız redirect(url_for()) işlemini yapabilmek için url lerimize name = "url_ismi" şeklinde isim vererek yapabiliriz.
+10.Fonksiyonumuz views dosyasında yer alıyordu. Biz daha önce views dosyamızı urls.py dosyasına eklemiştik. O yüzden index fonksiyonumuzu kullanabilmek için views.index komutu yeterli oldu. Kullanmak istediğimiz tüm fonksiyonları bu kalıpla kullanabiliriz.
+
+#HAKKIMIZDA SAYFASI OLUŞTURMA
+1.templates klasörünü altına about isimli bir html sayfası oluşturuyoruz.,
+2.layout.html i miras olarak alıyoruz.
+3.layout sayfasında boş olarak oluşturduğumuz body bloğunu oluşturup hakkımda alanını istediğimiz şekilde dolduruyoruz.,
+4.views.py dosyasına about sayfamızı çalıştırmak için about isimli bir fonksiyon oluşturduk ve bu fonksiyona about sayfasını döndürdük.
+5.urls.py dosyasında oluşturduğumuz bu about sayfasını path olarak ekledik.
+
+#CONTEXT OLUŞTURMA(PYTHONDA OLUŞTURULAN BİR YAPININ HTML SAYFASINDA KULLANILMASINI SAĞLAMA)
+    ###1.Yol
+    1.views dosyasında fonksiyonlarımızı oluştururken html sayfasına göndermek istediğimiz bilgiyi bir sözlük olarak render kısmında tanımlıyoruz. Örneğin {"number":7} şeklinde.
+    2.render içinde süslü parantezde tanımladığımız bilgiyi gönderdiğimiz html sayfasında anahtar kelimesini çift süslü parantez içinde yazarak ({{number}}) kullanabiliriz.
+
+    ###2.Yol
+    1.views dosyasında fonksiyonu oluştururken render yapmadan önce göndermek istediğimiz bilgiyi(veriyi) sözlük olarak oluşturuyoruz.
+        context = [
+        "number1" : 10,
+        "number2" : 20
+        ]
+    2.Oluşturduğumuz sözlük yapısını render içinde sözlük ismini direkt yazarak gönderebiliriz. 
+    3.render içinde gönderdiğimiz sözlüğü html sayfasında anahtar kelimesini çift süslü parantez içinde yazarak ({{number}}) kullanabiliriz.
+
+
+    ###NOT1: Python dosyasında tanımladığımız sözlüğün içinde ki bilgileri if bloğunda direkt anahtar kelimesi ile kullanabiliriz.
+    ###NOT2: Python dosyasında sözlük içinde bir anahtar kelimeyi liste olarakta tanımlayabiliriz. Bu tanımladığımız listeyi de for döngüsü ile sırasıyla ekrana bastırabiliriz.
+    PYTHON KODU
+    context = [
+        "numbers" : [1,2,3,4,5,6],
+        ]
+
+    HTML KODU
+    <ul>
+    {% for number in numbers %}
+
+        <li>{{number}}</li>
+    {% endfor %}
+    </ul>
+
+#DİNAMİK URL TANIMLAMA
+1.Daha sonra viwes.py dosyasına dinamik url yapımız için bir fonksiyon oluşturuyoruz. id adresimizi fonksiyonumuza parametre olarak ekliyoruz.
+2.Oluşturmak istediğimiz dinamik url i urls.py dosyasına path olarak ekliyoruz. Django da oluşturacağımız dinamik url de değer int olması gerektiği için <int:id> şeklinde ekliyoruz dinamik urlimizi.
+3.urls.py dosyasında ki path e oluşturduğumuz fonksiyonun ismini de yazıyoruz.
+
+
+#UYGULAAMA URL İ VE İNCLUDE
+1.İç içe url Örneğin article/create gibi bir url tanımlamak istersek bunu blog klasörünü içinde yer alan urls.py dosyası ile yapamayız. Bu yüzden ikinci bir url.py dosyası oluşturmalıyız. Bunu article klasörünün içine oluşturabiliriz.
+2.Oluşturduğumuz bu urls.py dosyası blog klasörünün altındakiyle aynı yapıdadır. O yüzden aynı taslağı kullanabiliriz.
+3.Article klasörünün altına oluşturduğumuz urls.py dosyasına diğerinden farklı olarak bir isim vermeliyiz. Bu isim istediğimiz herhangi bir isim olabilir. Sadece verdiğimiz bu app ismini blog klasörünün içinde ki url.py dosyasında path ismi olarak eklenmeli.
+    app_name = "article"
+
+4.Daha sonra bu dosyada oluşturduğumuz path e url ismi ve çalışmasını istediğimiz fonksiyonu belirtmeliyiz. Bu aşama da (ana url dosyamızda ki pathte)fonksiyon girmemize gerek yoktur.
+    path("create/",views.(fonksiyon_ismi))
+
+5.Blog klasörünün içinde ki urls.py dosyasına path olarak oluşturduğumuz urls.py dosyasını dahil etmeliyiz. İnclude fonksiyonunun çalışabilmesi için "django.urls" modülünden import edilmesi unutulmamalıdır.
+    path("articles",include("article.urls"))
+    path("app_name",include("(urlin_oluşturulduğu_dosya_adı).(urllerin_yazıldığı_dosya)"))
+
+
+    ###Çalışma Mantığı: "article/cretae/" diye bir url adresi çalıştırıldığında ilk  ana url yapımız olan blog klasörünün içinde ki urls.py dosyasında articles isimli pathi arar. Daha sonra article pathinde dahil edilen dosyaya gider ve orada ikinci path olarak verilen create pathini arar ve içinde yazan fonksiyonu çalıştırır.
+
+#USER UYGULAMASI OLUŞTURMA VE KAYIT EKRANI
+1.İlk olarak yeni bir terminal açıp "python manage.py startapp user" yazıp çalıştırarak user isimli yeni bir uygulama klasörü oluşturuyoruz.
+2.Oluşturduğumuz uygulama klasörümüzü blog klasöründe ki settings.py dosyasına ekliyoruz(tanıtıyoruz).
+3.Kullanıcımızı djangonun hazır classlarından oluşturacağımız için kendimiz herhangi bir model oluşturmayacağız.
+4.Kullanıcı girişi ile ilgili url lerimizi girebilmek için user klasörünün içine urls.py dosyası oluşturuyoruz.
+5.Oluşturduğumuz url dosyasına diğer urls dosyasındaki kütüphaneleri ekleyip uygulamamız kullanıcı uygulaması olduğu için uygulama adını app_name = "user" yapıyoruz.
+6.Oluşturduğumuz urls.py dosyamıza kayıt(register),giriş(loginUser) ve çıkış(logoutUser) linklerimizi ve fonksiyonlarımızı path olarak ekledik.
+7.kayıt(register) ve giriş(loginUser) linkleri için her birine ayrı ayrı sayfa(html) oluşturduk ve ikisine de layout.html(ana iskeletimizi) extends(miras olarak aktarma) ettik.
+8.user klasöründe ki views.py dosyasına urls.py de path içine yazdığımız fonksiyonları oluşturduk. register ve loginUser için kendi isimleriyle oluşturduğumuz html leri render ettik. logout ta ise index sayfasını render ettik.
+
+#FORM CLASSINDAN REGİSTERFORM OLUŞTURULMASI
+1.User klasörünün altına oluşturacağımız tüm formları barındıracak olan forms.py dosyası oluşturuyoruz.
+2.User uygulama kalsaörü içinde yer alan views.py dosyasına forms.py dosyasını import ettik. Orada formumuzu bir objeye eşitleyip ondan sözlük oluşturduk ve register.html sayfasına göçnderdik.
+3.Formumuzu register.html ekranında kullandık.
+
+#YENİ KULLANICI KAYDININ TAMAMLANMASI
+1.navbara kayıt ol butonu ekliyoruz.
+    #1.YÖNTEM
+    1.  from django.contrib.auth.models import User #Djangonun içinde kendiliğinden var olan User modelini dahil ettik. Bunun sebebi kullanıcı kaydınız User modeline kayıt etmek için.
+
+        from django.contrib.auth import login #Kullanıcı kayıt yaptığında aynı zamanda giriş yapmasını sağlamak için login fonksiyonunu dahil ettik.
+
+        def register(request): #Kayıt fonksiyonunu oluşturduk.
+            if request.method == "POST": #Formumuzun post request olup olmadığını sorguladık.
+                form = RegisterForm(request.POST) #RegisterFormumuzu post requestten gelen bilgilerle doldurup form objesine eşitledik.
+                if form.is_valid(): #Bu fonksiyon çağırıldığında python forms dosyasına gider ve clean fonksiyonuna bakar. Eğer password ve confirm değerleri birbiriyle aynıysa values sözlüğünü döndürür. Bu değerler döndürülürse form.is_valid koşulu true gibi davranır. Eğer koşul sağlanmıyorsa ve values sözlüğünde ki değerler dönmüyorsa false gibi davranır ve raise ileValidationError fırlatılır.
+                    username = form.cleaned_data.get("username") #Post requestten gelen username bilgisini aldık.
+                    password = form.cleaned_data.get("password") #Post requestten gelen password bilgisini aldık.
+
+                    newUser = User(username = username) #Post requestten gelen username bilgisini newUser objesine ekledik.
+                    newUser.set_password(password) #Post requestten gelen password bilgimizi şifreleyerek newYser objesine ekledik.
+                    newUser.save()
+                    login(request,newUser) #newUser kullanıcımız sisteme giriş yaptı.
+                    
+                    return redirect("index") #işlem tamamlandıktan sonra ana sayfaya dönüş yaptık.
+                context = {#Bir sonra ki ekranda gösterebilmek için sözlük halinde yazmamız grektiği için sözlük halinde yazdık.
+
+                    "form" : form
+                }
+                return render(request,"register.html",context) #Koşulumuz sağlanmadığı için sözlüğü register.html sayfasına gönderdik.
+                
+
+            else:
+                form = RegisterForm() #forms.py dosyasında oluşturduğumuz RegisterFormumuzu form objesine eşitledik.
+                context = {#Bir sonra ki ekranda gösterebilmek için sözlük halinde yazmamız grektiği için sözlük halinde yazdık.
+
+                    "form" : form
+                }
+                return render(request,"register.html",context) # Sözlüğü register.html sayfasına gönderdik.
+
+    2.Kayıt ekranımız olan register.html de ki form bloğunun içine aşağıda ki kodu ekledik.
+            {% csrf_token %} <!--Formlarımızdan post request yaparken bu bilgilerin 3.kişiler tarafından çalınmasını engellemek için bunu mutlaka eklemeliyiz.-->
+
+    #2.Yöntem
+    1.  from django.contrib.auth.models import User #Djangonun içinde kendiliğinden var olan User modelini dahil ettik. Bunun sebebi kullanıcı kaydınız User modeline kayıt etmek için.
+
+        from django.contrib.auth import login #Kullanıcı kayıt yaptığında aynı zamanda giriş yapmasını sağlamak için login fonksiyonunu dahil ettik.
+
+        def register(request): #Kayıt fonksiyonunu oluşturduk.
+            form = RegisterForm(request.POST or None) #RegisterFormumuzu post requestten gelen bilgilerle doldurup form objesine eşitledik. Eğer post request değilse boş olarak oluştur dedik.
+            if form.is_valid(): #Bu fonksiyon çağırıldığında python forms dosyasına gider ve clean fonksiyonuna bakar. Eğer password ve confirm değerleri birbiriyle aynıysa values sözlüğünü döndürür. Bu değerler döndürülürse form.is_valid koşulu true gibi davranır. Eğer koşul sağlanmıyorsa ve values sözlüğünde ki değerler dönmüyorsa false gibi davranır ve raise ileValidationError fırlatılır.
+                username = form.cleaned_data.get("username") #Post requestten gelen username bilgisini aldık.
+                password = form.cleaned_data.get("password") #Post requestten gelen password bilgisini aldık.
+
+                newUser = User(username = username) #Post requestten gelen username bilgisini newUser objesine ekledik.
+                newUser.set_password(password) #Post requestten gelen password bilgimizi şifreleyerek newYser objesine ekledik.
+                newUser.save()
+                login(request,newUser) #newUser kullanıcımız sisteme giriş yaptı.
+                    
+                return redirect("index") #işlem tamamlandıktan sonra ana sayfaya dönüş yaptık. redirect fonksiyonun içine url adresi yerine urls.py de tanımladığımız name i yazdık.
+            #Eğer request post request değilse yukarıda ki şart sağlanmayacağı için if bloğuna girmez ve bu işlemler yapılır.
+            context = {#Bir sonra ki ekranda gösterebilmek için sözlük halinde yazmamız grektiği için sözlük halinde yazdık.
+
+                "form" : form
+            }
+            return render(request,"register.html",context) #Koşulumuz sağlanmadığı için sözlüğü register.html sayfasına gönderdik.
+
+    2.Kayıt ekranımız olan register.html de ki form bloğunun içine aşağıda ki kodu ekledik.
+            {% csrf_token %} <!--Formlarımızdan post request yaparken bu bilgilerin 3.kişiler tarafından çalınmasını engellemek için bunu mutlaka eklemeliyiz.-->
+
+#DJANGO MESAJLARINI KULLANMA
+1.Mesajı kullanmak istediğimiz python dosyasına messages modlünü ekliyoruz. 
+    "from django.contrib import messages"
+
+2.Mesajı kullanmak istediğimiz yere oluşturuyoruz.
+    "messages.success(request,"Başarıyla Kayıt Oldunuz...")"
+
+3. Bu mesajı görüntülemek istediğimiz html sayfasına aşağı da ki kodu ekliyoruz. Bu projede tüm mesajlarımızın navbarın altında görünmesini istediğimiz için layout sayfasına ekledik.
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    ###NOT: Eğer biz mesajlarımızı renkli bir şekilde kullanmak istiyorsak aşağıda ki şekilde yazabiliriz.  Diğerinden farkı ul ve li içinde değil div içinde alert sınıfında göstermemizdir.
+        {% if messages %}
+        
+            {% for message in messages %}
+            <div{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
+            {% endfor %}
+        
+        {% endif %}
+
+    ###NOT(PÜF NOKTASI): Django mesajlarında danger mesajı bulunmaz. Biz bunu if koşuluyla kendimiz kontrol ederek yapabiliriz.
+
+        {% if messages %}
+        
+            {% for message in messages %}
+                {% if message.tags == "info" %}
+
+                <div class="alert alert-danger">{{ message }}</div>
+
+                {% else %}
+
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+
+                {% endif %}
+                
+            {% endfor %}
+        
+        {% endif %}
+
+#LOGİN İŞLEMİ
+1.navbara giriş butonu ekliyoruz.
+2.forms.py dosyasına giriş işlemi formu için bir LoginForm classı oluşturuyoruz.
+3.Oluşturduğumuz LoginForm u login.html ekranımızda gösteriyoruz  ve bir buton ekliyoruz.
+4.Login ekranı için views.py dosyasında loginUser isimli bir fonksiyon oluşturuyoruz.
+
+#CRİSPY FORMLARI
+1.https://getbootstrap.com/docs/4.0/layout/grid/ den form yapımızı seçiyoruz.Bu şekilde istediğimiz yazıyı istediğimiz şekilde gösterebiliriz.
+2.Eğer django daki formlarımıza bootstrap leri dahil etmek istersek cripsy formları kullanmak zorundayız. Bu yüzden yeni bir terminal açıp "pip install django-crispy-forms" yazıp çalıştırarak crisipy formları indiriyoruz.
+3.https://django-crispy-forms.readthedocs.io/en/latest/install.html buradan yardım alarak ilerliyoruz.
+4.settings.py dosyasındaki INSTALLED_APPS listesine 'crispy_forms' ve 'crispy_bootstrap4' u ekliyoruz.
+5.Son olarakta CRISPY_TEMPLATE_PACK = 'bootstrap4' ü settings.py dosyamıza ekliyoruz ve artık crispy form yapımızı kullanabiliriz.
+6.Kullanmak istediğimiz ekranda formu artık {{forms.as_p}} şeklinde değil {{forms|crispy}} şeklinde yazarak gösteriyoruz.
+7.https://django-crispy-forms.readthedocs.io/en/latest/filters.html sitesinden kullanmak istediğimiz sayfaya daki body bloğunun çine "{% load crispy_forms_tags %}" ekleyip işlemi tamamlıyoruz.
+###NOT:Bu cripsy form yapısını tüm formalarımıza uygulayabiliriz.Crispy formlar ekranda daha düzgün bir görüntü oluşmasını sağlar. Ekranda boyut değişimi olsa bile belirlenen konumda olmasını sağlar. Örneğin sayfanın tüm boyutlarında tam ortasına gelecek şekilde ayarlamak.
+
+#LOGOUT İŞLEMİ (https://docs.djangoproject.com/en/4.2/topics/auth/default/)
+1. Giriş çıkış kontrolünü yapan "from django.contrib.auth.decorators import login_required" decoratorunu ve "from django.contrib.auth import logout" çıkış yapmamızı sağlayan logout fonksiyonunu ekledik.
+2.login_required decorat ekleyerek logoutUser fonksiyonumuzu yazıyoruz.
+
+#OTURUM KONTROLÜ(https://docs.djangoproject.com/en/4.2/topics/auth/default/)
+1.Aşağıdaki bloklar ile kontrol sağlanır.
+  {% if request.user.is_authenticated %} <!--Kullanıcı girişi yapıldıysa çalışır.-->
+  {% else %} <!--Kullanıcı girişi yapılmadıysa çalışır.-->
+  {% endif %}
+
+
+#DASHBOARD SAYFASI OLUŞTURMA VE MAKALE EKLEME SAYFASI.
+1.İlk olarak article klasörünün altındaki urls.py dosyasına dashboard linkini ekliyoruz.
+2.article klasörünün içinde ki views dosyasının içine dashboard fonksiyonunu oluşturuyoruz.
+3.dashboard.html sayfasını oluşturuyoruz.
+4.Makale ekleme butonuna basıldığında makale ekleme sayfasını döndürüldükten sonra makale ekleme sayfamız için article klasörünün altındaki urls.py dosyasına addarticle linkini ekliyoruz.
+5.article klasörünün altında ki views dosyasına addarticle fonksiyonumuzu yazıyoruz.
+6.addarticle.html sayfamızı oluşturuyoruz.
+7.article klasörünün altına article ile ilgili formları yazacağımız forms.py isimli bir dosya oluşturuyoruz.
+8.forms.py dosyasının içine https://docs.djangoproject.com/en/4.2/topics/forms/modelforms/ den yararlanarak daha önce article klasörünün içinde ki models.py dosyasından ArticleForm classı oluşturuyoruz.
+9.Son olarak bu article formumuzu addarticle.html sayfasında gösteriyoruz.
+
+#MAKALELERİ VERİTABANINA KAYIT ETME
+1.article klasörünün içindeki views.py dosyasında yer alan addarticle fonksiyonunun içinde işlemlerimizi yapıyoruz.
+    ###NOT: Formumuzda author bilgisi yer almadığı için eğer onu kendimiz belirtmezsek django hata verir. created_date bilgisini otomatik olarak oluştur şeklinde oluşturduğumuz için onu belirtmeye gerek yoktur.
+
+#DASHBOARDDA MAKALELERİ GÖSTERME
+1.article klasörünün içinde yer alan views.py dosyasına dashboard fonksiyonu oluşturuyoruz. Ve views.py dosyasının içine Article classını import ediyoruz.
+2.Oluşturduğumuz fonksiyonun içinde Article tablosunda şu an ki kullanıcıya ait makaleleri alıyoruz ve onları article objesine eşitliyoruz.
+3.Bu objeyi bir sözlük halinde yazıp bir sonraki sayfaya dödnürüyoruz.
+4.Dashboard sayfasına bu makaleleri göstereceğimiz bir tablo ekliyoruz.(https://getbootstrap.com/docs/4.0/content/tables/)
+5.Son olarak tablonun sadece bir veri geldiyse gösterilmesini sağlicak bir if koşulu ekliyoruz.
+
+
+#MAKALE DETAY SAYFASI
+1.Dashboard.html sayfasında ki tabloda yer alan makale başlığına a etiketi ile link özelliği ekledik.
+2.article klasörünün altında ki urls.py dosyasına id ile dinamik url mizi ekliyoruz.
+3.artcile klasörünün altında ki views.py dosyasına detail fonksiyonunu oluşturuyoruz. Fonksiyonun içinde o id de ki makalenin bilgilerini alıp article objesine eşitleyip detail.html sayfasına gönderiyoruz.
+4.detail.html sayfamız için https://startbootstrap.com/previews/blog-post den sağ tıklayıp sayfa kaynağını görüntüleden hazır blog görüntü yapısının kodlarını alıyoruz.
+5.Filter ile elde ettiğimiz makalenin bilgilerini bu kalıba ekliyoruz.
+
+###NOT: detail fonksiyonunda id ile filtreleyerek obje alırken sonuna first() fonksiyonu yani ilk gördüğün makaleyi al demeyi unutmamalıyız yoksa kodumuz doğru çalışmaz ve ekrana makale bilgisi gelmez. Çünkü filter fonksiyonu bize bir liste döndürür.
+
+#404 SAYFASI FIRLATMA
+1.article klasörünün altında ki views.py dosyasına get_object_or_404 fonksiyonunu ekliyoruz. Bu fonksiyon eğer o id li obje varsa onu yoksa da 404 hatasını döndürür.
+2.get_object_or_404 fonksiyonu içine ilk olarak hangi modelden veri çekmek istediğimizi girdik ve sonra sorgumuzu yazdık ve bunu bir objeye eşitledik.
+
+#BOOTSTRAP DOSYALARINI DÜZENLEME(https://docs.djangoproject.com/en/4.2/howto/static-files/)
+1.layout.html dosyasının içine dahil ettiğimiz bootstrap scriplerini bu şekilde kullanmak çok güvenli olmadığı için static klasörünün altına css kodlarımızı koyacağımız css klasörü ve javacript dosyalarımızı koyacağımız js klasörü oluşturuyorup bu klasörlerin içine kendimiz tanımlıyoruz.
+2.layout.html deki linklerdeki sürümlerin kodlarının indiriyoruz.
+3.layout.html de ki link halinde ki css js kodlarını siliyoruz ve onların yerine static dosyasında oluşturduğumuz css ve js dosyasını dahil ediyoruz.
+4.Django sitemizi bir surver a yüklediğimizde problem yaşamamız için djangonun kendi içinde var olan css ve js dosyalarıyla birleştirip tek bir klasör haline getirmemizi öneriyor.
+5.Son adımımız olan bu düzenlemeyi blog klasörünün altındaki settings.py dosyasına STATIC_ROOT = os.path.join(BASE_DIR,"staticfiles") u ekliyoruz. Burada klasörümüzün adı kendi oluşturduğumuz static klasörünün adından farklı olması gerektiği için staticfiles olarak BASE_DIR altına oluşturduk.
+6.Terminalimizden "python manage.py collectstatic" komutunu çalıştırdığımızda tüm css js klasörleri "staticfiles" klasörünün altına gelecektir.
+
+
+#CK EDİTOR EKLEME(https://django-ckeditor.readthedocs.io/en/latest/#installation)
+1.terminalden "pip install django-ckeditor" kodunu çalıştırarak bilgisayarımıza ck editoru indiyoruz.
+2."ckeditor" uygulamasını blog klasörünün altında ki setting.py dosyasındaki INSTALLED_APPS listesine ekliyoruz.
+3.Eklediğimiz ckeditor uygulamasında ki css ve js dosyalarının staticfiles klasörüne eklenmesi için terminalden "python manage.py collectstatic" komutunu çalıştırıyoruz.
+4.https://django-ckeditor.readthedocs.io/en/latest/ deki usages kısmından yararlanarak adımları takip ediyoru<.
+5.Biz ck editörü articlelarda kullanmak istediğimiz için article klasörünü altında ki models.py dosyasına class yapısını ekliyoruz.
+6. https://django-ckeditor.readthedocs.io/en/latest/ Outside of django admin kısmından yararlanarak ck editörü ekranımızda gösteriyoruz.
+7.CKEditorun şu an ki hali code snippetta sorun çıkaracağı için configure etmemiz gereklidir. https://django-ckeditor.readthedocs.io/en/latest/#if-you-want-to-use-allowedcontent
+
+#FILE UPLOAD (https://simpleisbetterthancomplex.com/tutorial/2016/08/01/how-to-upload-files-with-django.html)
+###NOT:Eğer ImageField kullanmak istersek pip install pillow ile pillow modülünü indirmemiz lazım.
+1.İlk olarak yüklediğimiz dosyaların kayıt edileceği dosyayı settings.py ye ekliyoruz.
+2.blog klasörünün altındaki urls.py dosyasına gerekli eklemleri yapıyoruz.
+3.settings.py dosyasında ki templates listesine "django.template.context_processors.media" yi ekliyoruz.
+4.Oluşturduğumuz makaleyi sildiğimizde içinde ki dosyalarında silinmesi için cleanup modülümüzü indiriyoruz. Bu modülümüz indirildiğinde otomatik olarak dahil olur. (https://pypi.org/project/django-cleanup/)
+5.cleanup modülünü ('django_cleanup.apps.CleanupConfig',) settings.py dosyasında li INSTALLED_APPS se yüklüyoruz.
+6.article klasörünün altında ki models.py de ki Article classına article_image isimli bir obje tanımlıyoruz.
+7.Python veri tabanına obje ekleyerek değişiklik yaptığımız için veri tabanımızı "python manage.py makemigrations" yaparak article_image alanını ekleyerek güncelliyoruz.
+8.Eklediğimiz alanı veri tabanında işleyebilmek "python manage.py migrate" ediyoruz.
+9.article klasörünün içinde yer alan forms.py de oluşturduğumuz ArticleForm classını models.py de ki Article classından oluşturduğumuz için bu classa da article_image objesini eklememiz gerekiyor.
+10.Makaleye eklenen dosyayı veri tabanına kayıt etmek için article klasörünün altında ki views.py dosyasındaki addarticle fonksiyonun içinde ArticleFormdan oluşturduğumuz form objesine "request.FILES or None" ekledik.
+11.addrticle.html de ki form etiketine ""enctype="multipart/form-data" ekledik.
+12.Eklediğimiz bu dosyanın makale detay sayfasında da görünmesi için detail.html sayfasına ekleme yaptık.
+
+#MAKALELERİ GÜNCELLEME
+1.article klasörünün içinde ki url.py dosyasına update dinamik url adresi olurşturuyoruz.
+2.article klasörünün içinde ki views.py dosyasına gelip updateArticle fonksiyonu oluşturuyoruz.
+3.update.html isimli addarticle ile aynı sayfa oluşturuyoruz ve üzerinde birkaç için değişikliği yapıyoruz.
+
+#MAKALE SİLME (https://medium.com/django-tr/bu-videomuzda-veritaban%C4%B1na-nas%C4%B1l-veri-ekleyece%C4%9Fimizi-g%C3%BCncelleyece%C4%9Fimizi-ve-listeleyebilece%C4%9Fimizi-32ebe5b9ab1f)
+1.article klasörünün içinde ki url.py dosyasına delete dinamik url adresi olurşturuyoruz.
+2.article klasörünün içinde ki views.py dosyasına gelip deleteArticle fonksiyonu oluşturuyoruz.
+3.update.html isimli addarticle ile aynı sayfa oluşturuyoruz ve üzerinde birkaç için değişikliği yapıyoruz.
+
+#login_required İŞLEMİ (https://docs.djangoproject.com/en/2.0/topics/auth/default/)
+1.article klasörünün altında ki views.py klasörüne login_required decoratorunu import ediyoruz.
+2.Kullanıcı girişi kontrolü yapmak istediğimiz tüm fonksiyonların üstüne @login_required yazarak login_required decoratorunu ekliyoruz.
+
+#MAKALE SAYFASI TASARIMI VE MAKALELERİ GÖSTERME (https://startbootstrap.com/template/blog-post)
+1.article klasörünün altındaki urls.py dosyasına articles url imizi dahil ediyoruz.
+2.article klasörünün altında ki views.py dosyasının içine articles fonksiyonunu oluşturuyoruz.
+3.articles.html şeklinde makaleler sayfasını oluşturuyoruz.
+
+
+#CODE SNIPPET EKLEME (https://github.com/googlearchive/code-prettify) (Kod renklendirme)
+1.layout.html e script kodumuzu ekliyoruz. 
+2.Makale oluştururken eğer yazdığımız kodların renklenmesini istiyorsak <pre class="prettyprint"> </pre> etiketinin içine yazmalıyız.
+
+#DJANGO TEMPLATE FİLTRELERİ(https://docs.djangoproject.com/en/4.2/ref/templates/builtins/)
+###NOT: Aynı anda birden fazla filtre kullanılabilir.
+1.Biz makaleler sayfasında makalelerin içeriğinin hepsinin görünmesini istemediğimiz için articles.html sayfasında safe in yanında truncatewords filtresi yardımıyla yanına kelime sayısını yazarak istediğimiz kadar kelimenin görünmesini sağladık.
+
+#ARAMA YAPMAK (Form işlemlerini yapmanın 3.yöntemi Get request olarak yapmak. Bu işlem eğer şifre gibi gizli olması gereken bilgilerle işlem yapılmayacaksa kullanılmalı.)
+1.articles.html sayfasına arama çubuğunun form yapısını ekliyoruz.
+2.article klasörünün altında ki views.py dosyasına gidiyoruz ve articles fonksiyonun içine arama işlemimizi yapıyoruz.
+##NOT:Tüm form işlemlerinde csrf token bulunması gereklidir. Bu yüzden articles.html in içine eklediğimiz form yapısının içine csrf token ı eklemeyi unutmamalıyız.
+
+#URL LERİ DİNAMİK HALE GETİRME
+1."{% url 'article:articles' %}" şeklinde tüm url adreslerimizi dinamik hale getirebiliriz. Bu yapmakta ki amaç proje büyüdükçe ya da link adreslerimiz değiştikçe o linkleri kullanılan her yerde değiştirmek zor ve karışıklığa sebep açıcı olmasıdır.
+Eğer url adresimiz ana uygulamamız(klasörün içinde ki urls.py dosyasındaysa) içindeyse bunu belirtmemize gerek kalmadan direkt link ismini yazabiliriz. Fakat linkimiz farklı uygulamanın(klasörün içinde ki urls.py dosyasındaysa) içindeyse bunu belirtmeliyiz.
+Eğer bu id li bir dinamik url ise {% url 'article:detail' article.id %} şekilde yazılır.
+
+#COMMENT(Yorum) MODELİ OLUŞTURMA VE COMMENT FORM (https://startbootstrap.com/template/blog-post)
+1.article klasörünün içinde ki models.py dosyasının içine Comment classı oluşturuyoruz.
+2.Bu Comment classının admin panelinde de görünmesini istediğimiz için article klasörünün altında ki admin.py dosyasına ekliyoruz.
+3.Veri tabanımızda değişiklik yaptığımız için sırasıyla "python manage.py makemigrations" ve "python manage.py migrate" komutlarını çalıştırmalıyız.
+4.Kullanmak istediğimiz Comment form yapımızı detail.html in içine ekliyoruz. Bu text areaya bir isim veriyoruz.
+5.Eklediğimiz form yapısının içine csrf token ı ekliyoruz.
+6. https://getbootstrap.com/docs/4.0/components/forms/ den bir tane input alanı ekliyoruz. Bu input alanına bir isim veriyoruz.
+7.Yorum submit edildiğinde formun gönderileceği url adresini article klasörünün altında ki urls.py dosyasına ekliyoruz.
+8.article klasörünü altında ki views.py dosyasının içine addComment fonksiyonumuzu oluşturuyoruz.
+##NOT:Dinamik bir url adresini redirect yapmak için reverse fonksiyonu kullanılır.
+
+
+#MAKALE YORUMLARINI GÖSTERME
+1.Yorumları detay sayfasında göstereceğimiz için article klasörünün içinde ki views.py dosyasına yer alan detal fonksiyonunun içine comments bilgilerini alıyoruz ve detail.html sayfasına gönderiyoruz.
+2.detail.html sayfasında comments gelip gelmediğini if koşuluyla kontrol ederek eğer geldiyse ekranda gösteriyoruz.
+
+
+#MAKALELERİ VE YORUMLARINI TARİHE GÖRE SIRALAMA (https://docs.djangoproject.com/en/4.2/ref/models/options/#ordering)
+1.Classlarımızdan sıralama yapmak istediklerimizin içine Meta classını ekliyoruz.
+2.Veri tabanımızda değişiklik yaptığımız için sırasıyla "python manage.py makemigrations" ve "python manage.py migrate" komutlarını çalıştırmalıyız.
+
+
+########################################https://simpleisbetterthancomplex.com/#################################################

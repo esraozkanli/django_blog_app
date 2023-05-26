@@ -1,0 +1,26 @@
+{% extends 'layout.html' %} <!--layout.html içeriklerini(sayfasını) miras aldık.-->
+
+{% block body %}
+
+<div class="jumbotron text-center">
+    <!-- jumbotron sınıfı ekranda yazı yazmak için farklı renk bir yazı alanı oluşturur. -->
+    <!-- jumbotron text-center sınıfı ise yazılan yazıyı oluşan yazı alanında ortalar -->
+
+    <h3>Yazılım Bilimi Bloğuna Hoşgeldiniz.</h3>
+    <!-- Başlık oluşturmak için h3 elementini(metodunu) kullandık. -->
+
+    <p>Bu blogta geliştiriciler olarak blog yazılarınızı paylaşabilirsiniz ve insanlara yardımcı olabilirsiniz.</p>
+
+</div>
+
+<p>
+    {% if request.user.is_authenticated %}
+        Giriş yapılmıştır, {{request.user.username}}
+    {% else %}
+        Giriş yapılmamıştır.
+    {% endif %}
+</p>
+
+{% endblock body %}
+
+

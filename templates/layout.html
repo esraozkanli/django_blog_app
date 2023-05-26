@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+{% load static %} <!--static klasörümüzü yükledik.-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel = "stylesheet" href = {% static 'css/bootstrap.min.css' %}> <!--static klasörünün altında ki css klasörünün içinde ki "bootstrap.min.css" dosyasına bak.-->
+    <title>YB BLOG</title>
+</head>
+<body>
+    {% include "includes/navbar.html" %}    
+    <!-- Burada include komutu yardımıyla farklı bir html dosyasını yükledik. 
+        Yüklediğimiz html dosyası farklı bir klasörün içinde olduğu için klasör uzantısını da yazdık. -->
+
+
+        <div style = "margin-top : 100px;margin-bottom:100px" class = "container"> <!--container,alan demektir. style = "margin-top = 100px" ile de container alanının sayfanın yukarısından 100 px , margin-bottom = 100px ile de 100 px  aşağıdan başlamasını sağladık.--> 
+
+            {% if messages %}
+            
+                {% for message in messages %}
+                    {% if message.tags == "info" %}
+
+                    <div class="alert alert-danger">{{ message }}</div>
+
+                    {% else %}
+
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+
+                    {% endif %}
+                    
+                {% endfor %}
+            
+            {% endif %}
+
+            {% block body %}
+                <!--Miras olarak aktardığımz html dosyalarında doldurmak için içini boş bıraktık.-->
+            {% endblock body %}
+
+        </div>
+
+    <script src="{% static 'js/bootstrap.min.js' %}" ></script>
+    <script src="{% static 'js/jquery-3.2.1.slim.min.js' %}" ></script> 
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+
+
+</body>
+</html>
